@@ -99,7 +99,7 @@
 
                 <a
                   href="#"
-                  class="inline-block text-center bg-[blue] border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-indigo-700"
+                  class="inline-block text-center bg-[blue] border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-indigo-600"
                   >Get Started for Free</a
                 >
               </div>
@@ -109,8 +109,41 @@
       </div>
     </section>
     <!-- MAIN URL SHORTNER SECTION -->
-    <section class = "border border-black">
-            
+    <section class="border border-white h-[300px] bg-[#0b1736]">
+      <div class="h-[60px] mt-14 w-[1024px] m-auto">
+        <% if (locals.error) { %>
+        <p class="errors text-white"><%= error %></p>
+        <% } %>
+        <form action="/" method="post" class="flex h-[60px] justify-between">
+          <!-- INPUT BOX -->
+          <div class="w-[740px] h-full rounded-[10px]">
+            <input
+              class="w-full h-full rounded-[10px] p-5 text-xl outline-none"
+              type="url"
+              name="url"
+              id="url"
+              placeholder="Shorten your link"
+            />
+          </div>
+          <!-- BUTTON -->
+          <div class="w-[250px] h-full rounded-[10px]">
+            <input
+              class="cursor-pointer w-full h-full rounded-[10px] text-xl outline-none bg-[#1b3987] text-white"
+              type="submit"
+              value="Shorten"
+            />
+          </div>
+        </form>
+      </div>
+
+      <!-- Shorted Links Div -->
+      <div
+        class="short-url border border-white w-[955px] h-[100px] m-auto mt-9"
+      >
+        <% if (locals.short_url) { %>
+        <a href="<%= short_url %>"><%= short_url %> </a>
+        <% } %>
+      </div>
     </section>
   </body>
 </html>

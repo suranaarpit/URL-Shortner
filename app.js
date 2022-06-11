@@ -3,16 +3,53 @@ const shortId = require("shortid");
 const createHttpErr = require("http-errors");
 const mongoose = require("mongoose");
 const path = require("path");
+const shortUrl = require("./models/url");
 
 const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+mongoose
+  .connect("mongodb://localhost:27017/shortURL-Database")
+  .then(() => console.log("Mongoose Connetced"))
+  .catch((error) => console.log("Error in Connection..."));
+
 app.set("view engine", "ejs");
 
 app.get("/", async (req, res, next) => {
   res.render("index");
+});
+app.post("/", async (req, res, next) => {
+  try {
+    const { url } = req.body;
+    if (!url) {
+      throw createHttpErr.BadRequest("Provide a Valid URL");
+    }
+    const urlExists = await shortUrl.find({ url });
+    if (urlExists) {
+      res.render("index", {
+        short_url: `http://localhost:${PORT}/${urlExists.shortId}`,
+      });
+      return;
+    }
+    const shortUrl = new shortUrl({ url: url, shortId: shortId.generate() });
+    const result = await shortUrl.save();
+    res.render("index", {
+      short_url: `http://localhost:${PORT}/${result.shortId}`,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.use((req, res, next) => {
+  next(createHttpErr.NotFound());
+});
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.render("index", { error: err.message });
 });
 
 const PORT = process.env.PORT || 8080;
