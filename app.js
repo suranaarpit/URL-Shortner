@@ -3,7 +3,7 @@ const shortId = require("shortid");
 const createHttpErr = require("http-errors");
 const mongoose = require("mongoose");
 const path = require("path");
-const shortUrl = require("./models/url");
+const { shortUrl } = require("./models/url");
 
 const app = express();
 app.use(express.static(path.join(__dirname, "public")));
@@ -22,22 +22,36 @@ app.get("/", async (req, res, next) => {
 });
 app.post("/", async (req, res, next) => {
   try {
-    const { url } = req.body;
+    let { url } = req.body;
     if (!url) {
       throw createHttpErr.BadRequest("Provide a Valid URL");
     }
-    const urlExists = await shortUrl.find({ url });
+    const urlExists = await shortUrl.findOne({ url });
     if (urlExists) {
       res.render("index", {
         short_url: `http://localhost:${PORT}/${urlExists.shortId}`,
       });
       return;
     }
-    const shortUrl = new shortUrl({ url: url, shortId: shortId.generate() });
-    const result = await shortUrl.save();
+    const ShortUrl = new shortUrl({ url: url, shortId: shortId.generate() });
+    // console.log(ShortUrl)
+    const result = await ShortUrl.save();
     res.render("index", {
       short_url: `http://localhost:${PORT}/${result.shortId}`,
     });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get("/:shortId", async (req, res, next) => {
+  try {
+    const { shortId } = req.params;
+    const result = await shortUrl.findOne({ shortId });
+    if (!result) {
+      throw createHttpErr.NotFound("Short URL doesn't exists !");
+    }
+    res.redirect(result.url);
   } catch (err) {
     next(err);
   }

@@ -109,10 +109,10 @@
       </div>
     </section>
     <!-- MAIN URL SHORTNER SECTION -->
-    <section class="border border-white h-[300px] bg-[#0b1736]">
+    <section class="border border-white h-[fit-content] bg-[#0b1736]">
       <div class="h-[60px] mt-14 w-[1024px] m-auto">
         <% if (locals.error) { %>
-        <p class="errors text-white"><%= error %></p>
+        <p class="errors text-white p-2 text-[18px]"><%= error %></p>
         <% } %>
         <form action="/" method="post" class="flex h-[60px] justify-between">
           <!-- INPUT BOX -->
@@ -137,13 +137,25 @@
       </div>
 
       <!-- Shorted Links Div -->
-      <div
-        class="short-url border border-white w-[955px] h-[100px] m-auto mt-9"
-      >
+      <div class="short-url w-[955px] h-[100px] m-auto mt-9 p-[20px]">
         <% if (locals.short_url) { %>
-        <a href="<%= short_url %>"><%= short_url %> </a>
+        <a
+          class="text-[white] text-[32px] ml-[118px]"
+          href="<%= short_url %>"
+          target="_blank"
+          ><%= short_url %></a
+        >
         <% } %>
       </div>
     </section>
+    <section class="w-[1140px] h-[fit-content] m-auto p-[15px] mt-[35px]">
+        <img src="https://user-images.githubusercontent.com/99549985/176388639-47f2615b-e137-40c2-a83b-8122eba2a988.png" alt="img">
+    </section>
+    <section class="w-[1140px] h-[fit-content] m-auto p-[15px] mt-[35px]">
+      <img src="https://user-images.githubusercontent.com/99549985/176388657-f1b76e83-3671-431f-8b4a-be040c4706be.png" alt="img">
+  </section>
+  <section class="h-[fit-content] m-auto mt-[35px]">
+    <img src="https://user-images.githubusercontent.com/99549985/176388651-80fb641c-104b-4f34-a057-4cdc7cf0c3f5.png" alt="img">
+</section>
   </body>
 </html>
